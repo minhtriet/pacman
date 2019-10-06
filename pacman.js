@@ -222,6 +222,7 @@ Pacman.Ghost = function (game, map, colour) {
                     "y":pointToCoord(nextSquare(npos.y, due)),
                     "x":pointToCoord(nextSquare(npos.x, due))})) {
                 direction = due;
+                // todo log here
             } else {
                 npos = null;
             }
