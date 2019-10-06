@@ -14,7 +14,7 @@
     "webpack-dev-server": "^3.8.2"
   },
   "scripts": {
-    "predeploy": "yarn run build",
+    "build": "webpack --config webpack.dev.js",
     "deploy": "gh-pages -b master -d build",
     "start": "webpack-dev-server --mode development"
   }
