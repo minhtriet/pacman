@@ -1,13 +1,5 @@
-/*jslint browser: true, undef: true, eqeqeq: true, nomen: true, white: true */
-/*global window: false, document: false */
 
-/*
- * add fruits + levels
- * fix what happens when a ghost is eaten (should go back to base)
- * do proper ghost mechanics (blinky/wimpy etc)
- */
-
-var NONE        = 4,
+let NONE        = 4,
     UP          = 3,
     LEFT        = 2,
     DOWN        = 1,
@@ -18,13 +10,13 @@ var NONE        = 4,
     COUNTDOWN   = 8,
     EATEN_PAUSE = 9,
     DYING       = 10,
-    Pacman      = {};
+    Pacman      = {}
 
 Pacman.FPS = 30;
 
 Pacman.Ghost = function (game, map, colour) {
 
-    var position  = null,
+    let position  = null,
         direction = null,
         eatable   = null,
         eaten     = null,
@@ -32,21 +24,21 @@ Pacman.Ghost = function (game, map, colour) {
     
     function getNewCoord(dir, current) { 
         
-        var speed  = isVunerable() ? 1 : isHidden() ? 4 : 2,
+        let speed  = isVunerable() ? 1 : isHidden() ? 4 : 2,
             xSpeed = (dir === LEFT && -speed || dir === RIGHT && speed || 0),
             ySpeed = (dir === DOWN && speed || dir === UP && -speed || 0);
     
         return {
             "x": addBounded(current.x, xSpeed),
             "y": addBounded(current.y, ySpeed)
-        };
-    };
+        }
+    }
 
     /* Collision detection(walls) is done when a ghost lands on an
      * exact block, make sure they dont skip over it 
      */
     function addBounded(x1, x2) { 
-        var rem    = x1 % 10, 
+        let rem    = x1 % 10, 
             result = rem + x2;
         if (rem !== 0 && result > 10) {
             return x1 + (10 - rem);
@@ -54,60 +46,60 @@ Pacman.Ghost = function (game, map, colour) {
             return x1 - rem;
         }
         return x1 + x2;
-    };
+    }
     
     function isVunerable() { 
         return eatable !== null;
-    };
+    }
     
     function isDangerous() {
         return eaten === null;
-    };
+    }
 
     function isHidden() { 
         return eatable === null && eaten !== null;
-    };
+    }
     
     function getRandomDirection() {
-        var moves = (direction === LEFT || direction === RIGHT) 
+        let moves = (direction === LEFT || direction === RIGHT) 
             ? [UP, DOWN] : [LEFT, RIGHT];
         return moves[Math.floor(Math.random() * 2)];
-    };
+    }
     
     function reset() {
         eaten = null;
         eatable = null;
-        position = {"x": 90, "y": 80};
+        position = {"x": 90, "y": 80}
         direction = getRandomDirection();
         due = getRandomDirection();
-    };
+    }
     
     function onWholeSquare(x) {
         return x % 10 === 0;
-    };
+    }
     
     function oppositeDirection(dir) { 
         return dir === LEFT && RIGHT ||
             dir === RIGHT && LEFT ||
             dir === UP && DOWN || UP;
-    };
+    }
 
     function makeEatable() {
         direction = oppositeDirection(direction);
         eatable = game.getTick();
-    };
+    }
 
     function eat() { 
         eatable = null;
         eaten = game.getTick();
-    };
+    }
 
     function pointToCoord(x) {
         return Math.round(x / 10);
-    };
+    }
 
     function nextSquare(x, dir) {
-        var rem = x % 10;
+        let rem = x % 10;
         if (rem === 0) { 
             return x; 
         } else if (dir === RIGHT || dir === DOWN) { 
@@ -115,15 +107,15 @@ Pacman.Ghost = function (game, map, colour) {
         } else {
             return x - rem;
         }
-    };
+    }
 
     function onGridSquare(pos) {
         return onWholeSquare(pos.y) && onWholeSquare(pos.x);
-    };
+    }
 
     function secondsAgo(tick) { 
         return (game.getTick() - tick) / Pacman.FPS;
-    };
+    }
 
     function getColour() { 
         if (eatable) { 
@@ -136,11 +128,11 @@ Pacman.Ghost = function (game, map, colour) {
             return "#222";
         } 
         return colour;
-    };
+    }
 
     function draw(ctx) {
   
-        var s    = map.blockSize, 
+        let s    = map.blockSize, 
             top  = (position.y/10) * s,
             left = (position.x/10) * s;
     
@@ -152,12 +144,12 @@ Pacman.Ghost = function (game, map, colour) {
             eaten = null;
         }
         
-        var tl = left + s;
-        var base = top + s - 3;
-        var inc = s / 10;
+        let tl = left + s;
+        let base = top + s - 3;
+        let inc = s / 10;
 
-        var high = game.getTick() % 10 > 5 ? 3  : -3;
-        var low  = game.getTick() % 10 > 5 ? -3 : 3;
+        let high = game.getTick() % 10 > 5 ? 3  : -3;
+        let low  = game.getTick() % 10 > 5 ? -3 : 3;
 
         ctx.fillStyle = getColour();
         ctx.beginPath();
@@ -184,8 +176,8 @@ Pacman.Ghost = function (game, map, colour) {
         ctx.closePath();
         ctx.fill();
 
-        var f = s / 12;
-        var off = {};
+        let f = s / 12;
+        let off = {}
         off[RIGHT] = [f, 0];
         off[LEFT]  = [-f, 0];
         off[UP]    = [0, -f];
@@ -200,24 +192,24 @@ Pacman.Ghost = function (game, map, colour) {
         ctx.closePath();
         ctx.fill();
 
-    };
+    }
 
     function pane(pos) {
 
         if (pos.y === 100 && pos.x >= 190 && direction === RIGHT) {
-            return {"y": 100, "x": -10};
+            return {"y": 100, "x": -10}
         }
         
         if (pos.y === 100 && pos.x <= -10 && direction === LEFT) {
-            return position = {"y": 100, "x": 190};
+            return position = {"y": 100, "x": 190}
         }
 
         return false;
-    };
+    }
     
     function move(ctx) {
         
-        var oldPos = position,
+        let oldPos = position,
             onGrid = onGridSquare(position),
             npos   = null;
         
@@ -251,7 +243,7 @@ Pacman.Ghost = function (game, map, colour) {
 
         position = npos;        
         
-        var tmp = pane(position);
+        let tmp = pane(position);
         if (tmp) { 
             position = tmp;
         }
@@ -261,8 +253,8 @@ Pacman.Ghost = function (game, map, colour) {
         return {
             "new" : position,
             "old" : oldPos
-        };
-    };
+        }
+    }
     
     return {
         "eat"         : eat,
@@ -272,18 +264,18 @@ Pacman.Ghost = function (game, map, colour) {
         "reset"       : reset,
         "move"        : move,
         "draw"        : draw
-    };
-};
+    }
+}
 
 Pacman.User = function (game, map) {
     
-    var position  = null,
+    let position  = null,
         direction = null,
         eaten     = null,
         due       = null, 
         lives     = null,
         score     = 5,
-        keyMap    = {};
+        keyMap    = {}
     
     keyMap[KEY.ARROW_LEFT]  = LEFT;
     keyMap[KEY.ARROW_UP]    = UP;
@@ -295,19 +287,19 @@ Pacman.User = function (game, map) {
         if (score >= 10000 && score - nScore < 10000) { 
             lives += 1;
         }
-    };
+    }
 
     function theScore() { 
         return score;
-    };
+    }
 
     function loseLife() { 
         lives -= 1;
-    };
+    }
 
     function getLives() {
         return lives;
-    };
+    }
 
     function initUser() {
         score = 0;
@@ -318,18 +310,18 @@ Pacman.User = function (game, map) {
     function newLevel() {
         resetPosition();
         eaten = 0;
-    };
+    }
     
     function resetPosition() {
-        position = {"x": 90, "y": 120};
+        position = {"x": 90, "y": 120}
         direction = LEFT;
         due = LEFT;
-    };
+    }
     
     function reset() {
         initUser();
         resetPosition();
-    };        
+    }        
     
     function keyDown(e) {
         if (typeof keyMap[e.keyCode] !== "undefined") { 
@@ -339,25 +331,25 @@ Pacman.User = function (game, map) {
             return false;
         }
         return true;
-	};
+	}
 
     function getNewCoord(dir, current) {   
         return {
             "x": current.x + (dir === LEFT && -2 || dir === RIGHT && 2 || 0),
             "y": current.y + (dir === DOWN && 2 || dir === UP    && -2 || 0)
-        };
-    };
+        }
+    }
 
     function onWholeSquare(x) {
         return x % 10 === 0;
-    };
+    }
 
     function pointToCoord(x) {
         return Math.round(x/10);
-    };
+    }
     
     function nextSquare(x, dir) {
-        var rem = x % 10;
+        let rem = x % 10;
         if (rem === 0) { 
             return x; 
         } else if (dir === RIGHT || dir === DOWN) { 
@@ -365,29 +357,29 @@ Pacman.User = function (game, map) {
         } else {
             return x - rem;
         }
-    };
+    }
 
     function next(pos, dir) {
         return {
             "y" : pointToCoord(nextSquare(pos.y, dir)),
             "x" : pointToCoord(nextSquare(pos.x, dir)),
-        };                               
-    };
+        }                               
+    }
 
     function onGridSquare(pos) {
         return onWholeSquare(pos.y) && onWholeSquare(pos.x);
-    };
+    }
 
     function isOnSamePlane(due, dir) { 
         return ((due === LEFT || due === RIGHT) && 
                 (dir === LEFT || dir === RIGHT)) || 
             ((due === UP || due === DOWN) && 
              (dir === UP || dir === DOWN));
-    };
+    }
 
     function move(ctx) {
         
-        var npos        = null, 
+        let npos        = null, 
             nextWhole   = null, 
             oldPosition = position,
             block       = null;
@@ -413,15 +405,15 @@ Pacman.User = function (game, map) {
         }
 
         if (direction === NONE) {
-            return {"new" : position, "old" : position};
+            return {"new" : position, "old" : position}
         }
         
         if (npos.y === 100 && npos.x >= 190 && direction === RIGHT) {
-            npos = {"y": 100, "x": -10};
+            npos = {"y": 100, "x": -10}
         }
         
         if (npos.y === 100 && npos.x <= -12 && direction === LEFT) {
-            npos = {"y": 100, "x": 190};
+            npos = {"y": 100, "x": 190}
         }
         
         position = npos;        
@@ -448,30 +440,30 @@ Pacman.User = function (game, map) {
         return {
             "new" : position,
             "old" : oldPosition
-        };
-    };
+        }
+    }
 
     function isMidSquare(x) { 
-        var rem = x % 10;
+        let rem = x % 10;
         return rem > 3 || rem < 7;
-    };
+    }
 
     function calcAngle(dir, pos) { 
         if (dir == RIGHT && (pos.x % 10 < 5)) {
-            return {"start":0.25, "end":1.75, "direction": false};
+            return {"start":0.25, "end":1.75, "direction": false}
         } else if (dir === DOWN && (pos.y % 10 < 5)) { 
-            return {"start":0.75, "end":2.25, "direction": false};
+            return {"start":0.75, "end":2.25, "direction": false}
         } else if (dir === UP && (pos.y % 10 < 5)) { 
-            return {"start":1.25, "end":1.75, "direction": true};
+            return {"start":1.25, "end":1.75, "direction": true}
         } else if (dir === LEFT && (pos.x % 10 < 5)) {             
-            return {"start":0.75, "end":1.25, "direction": true};
+            return {"start":0.75, "end":1.25, "direction": true}
         }
-        return {"start":0, "end":2, "direction": false};
-    };
+        return {"start":0, "end":2, "direction": false}
+    }
 
     function drawDead(ctx, amount) { 
 
-        var size = map.blockSize, 
+        let size = map.blockSize, 
             half = size / 2;
 
         if (amount >= 1) { 
@@ -488,11 +480,11 @@ Pacman.User = function (game, map) {
                 half, 0, Math.PI * 2 * amount, true); 
         
         ctx.fill();    
-    };
+    }
 
     function draw(ctx) { 
 
-        var s     = map.blockSize, 
+        let s     = map.blockSize, 
             angle = calcAngle(direction, position);
 
         ctx.fillStyle = "#FFFF00";
@@ -508,7 +500,7 @@ Pacman.User = function (game, map) {
                 Math.PI * angle.end, angle.direction); 
         
         ctx.fill();    
-    };
+    }
     
     initUser();
 
@@ -525,12 +517,12 @@ Pacman.User = function (game, map) {
         "newLevel"      : newLevel,
         "reset"         : reset,
         "resetPosition" : resetPosition
-    };
-};
+    }
+}
 
 Pacman.Map = function (size) {
     
-    var height    = null, 
+    let height    = null, 
         width     = null, 
         blockSize = size,
         pillSize  = 0,
@@ -548,7 +540,7 @@ Pacman.Map = function (size) {
         if (!withinBounds(pos.y, pos.x)) {
             return false;
         }
-        var peice = map[pos.y][pos.x];
+        let peice = map[pos.y][pos.x];
         return peice === Pacman.EMPTY || 
             peice === Pacman.BISCUIT ||
             peice === Pacman.PILL;
@@ -556,7 +548,7 @@ Pacman.Map = function (size) {
     
     function drawWall(ctx) {
 
-        var i, j, p, line;
+        let i, j, p, line;
         
         ctx.strokeStyle = "#0000FF";
         ctx.lineWidth   = 5;
@@ -589,15 +581,15 @@ Pacman.Map = function (size) {
         map    = Pacman.MAP.clone();
         height = map.length;
         width  = map[0].length;        
-    };
+    }
 
     function block(pos) {
         return map[pos.y][pos.x];
-    };
+    }
     
     function setBlock(pos, type) {
         map[pos.y][pos.x] = type;
-    };
+    }
 
     function drawPills(ctx) { 
 
@@ -625,11 +617,11 @@ Pacman.Map = function (size) {
                 }
 		    }
 	    }
-    };
+    }
     
     function draw(ctx) {
         
-        var i, j, size = blockSize;
+        let i, j, size = blockSize;
 
         ctx.fillStyle = "#000";
 	    ctx.fillRect(0, 0, width * size, height * size);
@@ -641,11 +633,11 @@ Pacman.Map = function (size) {
 			    drawBlock(i, j, ctx);
 		    }
 	    }
-    };
+    }
     
     function drawBlock(y, x, ctx) {
 
-        var layout = map[y][x];
+        let layout = map[y][x];
 
         if (layout === Pacman.PILL) {
             return;
@@ -668,7 +660,7 @@ Pacman.Map = function (size) {
 	        }
         }
         ctx.closePath();	 
-    };
+    }
 
     reset();
     
@@ -684,12 +676,12 @@ Pacman.Map = function (size) {
         "height"       : height,
         "width"        : width,
         "blockSize"    : blockSize
-    };
-};
+    }
+}
 
-var PACMAN = (function () {
+let PACMAN = (function () {
 
-    var state        = WAITING,
+    let state        = WAITING,
         ghosts       = [],
         ghostSpecs   = ["#00FFDE", "#FF0000", "#FFB8DE", "#FFB847"],
         eatenCount   = 0,
@@ -707,7 +699,7 @@ var PACMAN = (function () {
 
     function getTick() { 
         return tick;
-    };
+    }
 
     function drawScore(text, position) {
         ctx.fillStyle = "#FFFFFF";
@@ -720,18 +712,15 @@ var PACMAN = (function () {
     function dialog(text) {
         ctx.fillStyle = "#FFFF00";
         ctx.font      = "14px BDCartoonShoutRegular";
-        var width = ctx.measureText(text).width,
+        let width = ctx.measureText(text).width,
             x     = ((map.width * map.blockSize) - width) / 2;        
         ctx.fillText(text, x, (map.height * 10) + 8);
     }
 
-    function soundDisabled() {
-        return localStorage["soundDisabled"] === "true";
-    };
-    
+
     function startLevel() {        
         user.resetPosition();
-        for (var i = 0; i < ghosts.length; i += 1) { 
+        for (let i = 0; i < ghosts.length; i += 1) { 
             ghosts[i].reset();
         }
         timerStart = tick;
@@ -775,16 +764,16 @@ var PACMAN = (function () {
     function setState(nState) { 
         state = nState;
         stateChanged = true;
-    };
+    }
     
     function collided(user, ghost) {
         return (Math.sqrt(Math.pow(ghost.x - user.x, 2) + 
                           Math.pow(ghost.y - user.y, 2))) < 10;
-    };
+    }
 
     function drawFooter() {
         
-        var topLeft  = (map.height * map.blockSize),
+        let topLeft  = (map.height * map.blockSize),
             textBase = topLeft + 17;
         
         ctx.fillStyle = "#000000";
@@ -792,7 +781,7 @@ var PACMAN = (function () {
         
         ctx.fillStyle = "#FFFF00";
 
-        for (var i = 0, len = user.getLives(); i < len; i++) {
+        for (let i = 0, len = user.getLives(); i < len; i++) {
             ctx.fillStyle = "#FFFF00";
             ctx.beginPath();
             ctx.moveTo(150 + (25 * i) + map.blockSize / 2,
@@ -804,9 +793,7 @@ var PACMAN = (function () {
             ctx.fill();
         }
 
-        ctx.fillStyle = !soundDisabled() ? "#00FF00" : "#FF0000";
         ctx.font = "bold 16px sans-serif";
-        //ctx.fillText("♪", 10, textBase);
         ctx.fillText("s", 10, textBase);
 
         ctx.fillStyle = "#FFFF00";
@@ -822,11 +809,12 @@ var PACMAN = (function () {
 
     function mainDraw() { 
 
-        var diff, u, i, len, nScore;
+        let u, i, len, nScore;
         
         ghostPos = [];
 
         for (i = 0, len = ghosts.length; i < len; i += 1) {
+            debugger;
             ghostPos.push(ghosts[i].move(ctx));
         }
         u = user.move(ctx);
@@ -859,11 +847,11 @@ var PACMAN = (function () {
                 }
             }
         }                             
-    };
+    }
 
     function mainLoop() {
 
-        var diff;
+        let diff;
 
         if (state !== PAUSE) { 
             ++tick;
@@ -917,7 +905,7 @@ var PACMAN = (function () {
         for (i = 0; i < ghosts.length; i += 1) {
             ghosts[i].makeEatable(ctx);
         }        
-    };
+    }
     
     function completedLevel() {
         setState(WAITING);
@@ -925,18 +913,18 @@ var PACMAN = (function () {
         map.reset();
         user.newLevel();
         startLevel();
-    };
+    }
 
     function keyPress(e) { 
         if (state !== WAITING && state !== PAUSE) { 
             e.preventDefault();
             e.stopPropagation();
         }
-    };
+    }
     
     function init(wrapper, root) {
         
-        var i, len, ghost,
+        let i, len, ghost,
             blockSize = wrapper.offsetWidth / 19,
             canvas    = document.createElement("canvas");
         
@@ -962,7 +950,7 @@ var PACMAN = (function () {
         dialog("Loading ...");
 
         loaded();
-    };
+    }
 
 
     function loaded() {
@@ -973,20 +961,20 @@ var PACMAN = (function () {
         document.addEventListener("keypress", keyPress, true); 
         
         timer = window.setInterval(mainLoop, 1000 / Pacman.FPS);
-    };
+    }
     
     return {
         "init" : init
-    };
+    }
     
 }());
 
 /* Human readable keyCode index */
-var KEY = {'BACKSPACE': 8, 'TAB': 9, 'NUM_PAD_CLEAR': 12, 'ENTER': 13, 'SHIFT': 16, 'CTRL': 17, 'ALT': 18, 'PAUSE': 19, 'CAPS_LOCK': 20, 'ESCAPE': 27, 'SPACEBAR': 32, 'PAGE_UP': 33, 'PAGE_DOWN': 34, 'END': 35, 'HOME': 36, 'ARROW_LEFT': 37, 'ARROW_UP': 38, 'ARROW_RIGHT': 39, 'ARROW_DOWN': 40, 'PRINT_SCREEN': 44, 'INSERT': 45, 'DELETE': 46, 'SEMICOLON': 59, 'WINDOWS_LEFT': 91, 'WINDOWS_RIGHT': 92, 'SELECT': 93, 'NUM_PAD_ASTERISK': 106, 'NUM_PAD_PLUS_SIGN': 107, 'NUM_PAD_HYPHEN-MINUS': 109, 'NUM_PAD_FULL_STOP': 110, 'NUM_PAD_SOLIDUS': 111, 'NUM_LOCK': 144, 'SCROLL_LOCK': 145, 'SEMICOLON': 186, 'EQUALS_SIGN': 187, 'COMMA': 188, 'HYPHEN-MINUS': 189, 'FULL_STOP': 190, 'SOLIDUS': 191, 'GRAVE_ACCENT': 192, 'LEFT_SQUARE_BRACKET': 219, 'REVERSE_SOLIDUS': 220, 'RIGHT_SQUARE_BRACKET': 221, 'APOSTROPHE': 222};
+let KEY = {'BACKSPACE': 8, 'TAB': 9, 'NUM_PAD_CLEAR': 12, 'ENTER': 13, 'SHIFT': 16, 'CTRL': 17, 'ALT': 18, 'PAUSE': 19, 'CAPS_LOCK': 20, 'ESCAPE': 27, 'SPACEBAR': 32, 'PAGE_UP': 33, 'PAGE_DOWN': 34, 'END': 35, 'HOME': 36, 'ARROW_LEFT': 37, 'ARROW_UP': 38, 'ARROW_RIGHT': 39, 'ARROW_DOWN': 40, 'PRINT_SCREEN': 44, 'INSERT': 45, 'DELETE': 46, 'SEMICOLON': 59, 'WINDOWS_LEFT': 91, 'WINDOWS_RIGHT': 92, 'SELECT': 93, 'NUM_PAD_ASTERISK': 106, 'NUM_PAD_PLUS_SIGN': 107, 'NUM_PAD_HYPHEN-MINUS': 109, 'NUM_PAD_FULL_STOP': 110, 'NUM_PAD_SOLIDUS': 111, 'NUM_LOCK': 144, 'SCROLL_LOCK': 145, 'SEMICOLON': 186, 'EQUALS_SIGN': 187, 'COMMA': 188, 'HYPHEN-MINUS': 189, 'FULL_STOP': 190, 'SOLIDUS': 191, 'GRAVE_ACCENT': 192, 'LEFT_SQUARE_BRACKET': 219, 'REVERSE_SOLIDUS': 220, 'RIGHT_SQUARE_BRACKET': 221, 'APOSTROPHE': 222}
 
 (function () {
 	/* 0 - 9 */
-	for (var i = 48; i <= 57; i++) {
+	for (let i = 48; i <= 57; i++) {
         KEY['' + (i - 48)] = i;
 	}
 	/* A - Z */
@@ -1140,7 +1128,7 @@ Pacman.WALLS = [
 ];
 
 Object.prototype.clone = function () {
-    var i, newObj = (this instanceof Array) ? [] : {};
+    let i, newObj = (this instanceof Array) ? [] : {}
     for (i in this) {
         if (i === 'clone') {
             continue;
@@ -1152,4 +1140,4 @@ Object.prototype.clone = function () {
         }
     }
     return newObj;
-};
+}
