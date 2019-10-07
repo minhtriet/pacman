@@ -18,6 +18,7 @@ Pacman.observe = function() {
     // pacman.ghost
     // pacman.user
     //
+    // return an array of states
 }
 
 Pacman.Ghost = function (game, map, colour) {
@@ -289,7 +290,8 @@ Pacman.User = function (game, map) {
     keyMap[KEY.ARROW_RIGHT] = RIGHT;
     keyMap[KEY.ARROW_DOWN]  = DOWN;
 
-    function addScore(nScore) { 
+    function addScore(nScore) {
+        // todo return reward
         score += nScore;
         if (score >= 10000 && score - nScore < 10000) { 
             lives += 1;
@@ -821,11 +823,11 @@ let PACMAN = (function () {
         ghostPos = [];
 
         for (i = 0, len = ghosts.length; i < len; i += 1) {
-            debugger;
             ghostPos.push(ghosts[i].move(ctx));
         }
+        // log ghostPos
         u = user.move(ctx);
-        
+        // log u
         for (i = 0, len = ghosts.length; i < len; i += 1) {
             redrawBlock(ghostPos[i].old);
         }
