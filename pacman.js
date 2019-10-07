@@ -14,6 +14,12 @@ let NONE        = 4,
 
 Pacman.FPS = 30;
 
+Pacman.observe = function() {
+    // pacman.ghost
+    // pacman.user
+    //
+}
+
 Pacman.Ghost = function (game, map, colour) {
 
     let position  = null,
