@@ -854,7 +854,7 @@ let PACMAN = (function () {
         // todo call the ML
         // ghost
         Pacman.STATE.set('ghost_position', ghostPos);
-        Pacman.STATE.set('shost_edible', [for (g of ghosts) g.isVunerable()]);
+        Pacman.STATE.set('ghost_edible', ghosts.map(g => g.isVunerable()));
         Pacman.STATE.set('user_position', u);
         debugger;
         // coins
