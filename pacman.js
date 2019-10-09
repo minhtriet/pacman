@@ -14,7 +14,7 @@ let NONE        = 4,
 
 Pacman.FPS = 30;
 
-Pacman.STATE =
+Pacman.STATE = new Map();
 
 Pacman.Ghost = function (game, map, colour) {
 
@@ -852,10 +852,11 @@ let PACMAN = (function () {
         }
 
         // todo call the ML
-        // Pacman.state.ghost[this].coord=[x,y]
         // ghost
-        ghostPos.app;
-        u;
+        Pacman.STATE.set('ghost_position', ghostPos);
+        Pacman.STATE.set('shost_edible', [for (g of ghosts) g.isVunerable()]);
+        Pacman.STATE.set('user_position', u);
+        debugger;
         // coins
         // player
         // energizer
