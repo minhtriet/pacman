@@ -855,11 +855,10 @@ let PACMAN = (function () {
         // ghost
         Pacman.STATE.set('ghost_position', ghostPos);
         Pacman.STATE.set('ghost_edible', ghosts.map(g => g.isVunerable()));
-        Pacman.STATE.set('user_position', u);
+        Pacman.STATE.set('user_position', u['new']);
         debugger;
-        // coins
-        // player
-        // energizer
+        Pacman.STATE.set('map', map.map);
+
     }
 
     function mainLoop() {
