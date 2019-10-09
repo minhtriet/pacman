@@ -230,6 +230,8 @@ Pacman.Ghost = function (game, map, colour) {
                     "x":pointToCoord(nextSquare(npos.x, due))})) {
                 direction = due;
                 // todo log here
+                debugger;
+                // Pacman.state.ghost[this].coord=[x,y]
             } else {
                 npos = null;
             }
