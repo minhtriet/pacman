@@ -665,6 +665,10 @@ Pacman.Map = function (size) {
         ctx.closePath();	 
     }
 
+    function getMap() {
+        return map;
+    }
+
     reset();
     
     return {
@@ -678,7 +682,8 @@ Pacman.Map = function (size) {
         "isFloorSpace" : isFloorSpace,
         "height"       : height,
         "width"        : width,
-        "blockSize"    : blockSize
+        "blockSize"    : blockSize,
+        "getMap"       : getMap,
     }
 }
 
@@ -857,7 +862,7 @@ let PACMAN = (function () {
         Pacman.STATE.set('ghost_edible', ghosts.map(g => g.isVunerable()));
         Pacman.STATE.set('user_position', u['new']);
         debugger;
-        Pacman.STATE.set('map', map.map);
+        Pacman.STATE.set('map', map.getMap());
 
     }
 
@@ -894,7 +899,7 @@ let PACMAN = (function () {
             }
         } else if (state === COUNTDOWN) {
             
-            diff = 5 + Math.floor((timerStart - tick) / Pacman.FPS);
+            diff = 1 + Math.floor((timerStart - tick) / Pacman.FPS);
             
             if (diff === 0) {
                 map.draw(ctx);
