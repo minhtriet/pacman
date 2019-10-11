@@ -1,3 +1,7 @@
+import * as tf from '@tensorflow/tfjs';
+
+const mobilenet = tf.loadLayersModel(
+      'https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json');
 
 let NONE        = 4,
     UP          = 3,
@@ -861,9 +865,7 @@ let PACMAN = (function () {
         Pacman.STATE.set('ghost_position', ghostPos);
         Pacman.STATE.set('ghost_edible', ghosts.map(g => g.isVunerable()));
         Pacman.STATE.set('user_position', u['new']);
-        debugger;
         Pacman.STATE.set('map', map.getMap());
-
     }
 
     function mainLoop() {
@@ -995,15 +997,15 @@ let KEY = {'BACKSPACE': 8, 'TAB': 9, 'NUM_PAD_CLEAR': 12, 'ENTER': 13, 'SHIFT': 
         KEY['' + (i - 48)] = i;
 	}
 	/* A - Z */
-	for (i = 65; i <= 90; i++) {
+	for (let i = 65; i <= 90; i++) {
         KEY['' + String.fromCharCode(i)] = i;
 	}
 	/* NUM_PAD_0 - NUM_PAD_9 */
-	for (i = 96; i <= 105; i++) {
+	for (let i = 96; i <= 105; i++) {
         KEY['NUM_PAD_' + (i - 96)] = i;
 	}
 	/* F1 - F12 */
-	for (i = 112; i <= 123; i++) {
+	for (let i = 112; i <= 123; i++) {
         KEY['F' + (i - 112 + 1)] = i;
 	}
 })();
