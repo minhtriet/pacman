@@ -1155,3 +1155,6 @@ Object.prototype.clone = function () {
     }
     return newObj;
 }
+
+var el = document.getElementById("pacman");
+window.setTimeout(function () { PACMAN.init(el, "./"); }, 0);
