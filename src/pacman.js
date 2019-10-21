@@ -1,3 +1,5 @@
+import logEnv from './ml.js';
+
 let NONE        = 4,
     UP          = 3,
     LEFT        = 2,
@@ -856,6 +858,7 @@ let PACMAN = (function () {
         }
 
         // todo call the ML
+        //print();
         // ghost
         Pacman.STATE.set('ghost_position', ghostPos);
         Pacman.STATE.set('ghost_edible', ghosts.map(g => g.isVunerable()));
