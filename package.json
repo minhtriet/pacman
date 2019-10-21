@@ -7,15 +7,18 @@
   "homepage": "https://minhtriet.github.io/pacman",
   "license": "MIT",
   "dependencies": {
-    "@tensorflow/tfjs": "^1.2.10",
+    "@tensorflow/tfjs": "^1.2.11",
+    "add": "^2.0.6",
     "gh-pages": "^2.1.1",
     "webpack": "^4.41.0",
     "webpack-cli": "^3.3.9",
-    "webpack-dev-server": "^3.8.2"
+    "webpack-dev-server": "^3.8.2",
+    "yarn": "^1.19.1"
   },
   "scripts": {
-    "build": "webpack --config webpack.dev.js",
+    "build": "webpack --config webpack.config.js",
     "deploy": "gh-pages -b master -d build",
     "start": "webpack-dev-server --mode development"
-  }
+  },
+  "description": "pacman-rl"
 }

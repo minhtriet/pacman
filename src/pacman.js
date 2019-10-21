@@ -1,8 +1,3 @@
-import * as tf from '@tensorflow/tfjs';
-
-const mobilenet = tf.loadLayersModel(
-      'https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json');
-
 let NONE        = 4,
     UP          = 3,
     LEFT        = 2,
