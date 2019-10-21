@@ -2,3 +2,4 @@ yarn-error.log
 *.lock
 node_modules/**
 .idea/**
+*.swp
