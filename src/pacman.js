@@ -596,7 +596,7 @@ Pacman.Map = function (size) {
     }
 
     function drawPills(ctx) { 
-
+        let i, j;
         if (++pillSize > 30) {
             pillSize = 0;
         }
@@ -803,7 +803,7 @@ let PACMAN = (function () {
         }
 
         ctx.font = "bold 16px sans-serif";
-        ctx.fillText("s", 10, textBase);
+        // ctx.fillText("s", 10, textBase);
 
         ctx.fillStyle = "#FFFF00";
         ctx.font      = "14px BDCartoonShoutRegular";
@@ -919,6 +919,7 @@ let PACMAN = (function () {
     function eatenPill() {
         timerStart = tick;
         eatenCount = 0;
+        let i;
         for (i = 0; i < ghosts.length; i += 1) {
             ghosts[i].makeEatable(ctx);
         }        
