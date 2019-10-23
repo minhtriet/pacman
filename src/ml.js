@@ -12,7 +12,7 @@ let ob_next;
 let reward;
 let done;
 let env;
-ob_next, reward, done, info = env.step(action)
+// ob_next, reward, done, info = env.step(action)
 
 export function logEnv() {
     alert('hi');
