@@ -1,4 +1,4 @@
-import * as tf from '@tensorflow/tfjs';
+// import * as tf from '@tensorflow/tfjs';
 
 /**const mobilenet = tf.loadLayersModel(
       'https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json');*/
@@ -14,6 +14,9 @@ let done;
 let env;
 // ob_next, reward, done, info = env.step(action)
 
-export function logEnv() {
+var logEnv = function() {
     alert('hi');
 }
+
+
+export { logEnv }

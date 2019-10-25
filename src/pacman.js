@@ -858,8 +858,9 @@ let PACMAN = (function () {
         }
 
         // todo call the ML
-        //print();
+        logEnv();
         // ghost
+        debugger;
         Pacman.STATE.set('ghost_position', ghostPos);
         Pacman.STATE.set('ghost_edible', ghosts.map(g => g.isVunerable()));
         Pacman.STATE.set('user_position', u['new']);
@@ -869,6 +870,7 @@ let PACMAN = (function () {
     function mainLoop() {
 
         let diff;
+        let i;
 
         if (state !== PAUSE) { 
             ++tick;
