@@ -1,4 +1,4 @@
-import logEnv from './ml.js';
+import { logEnv } from './ml.js';
 
 let NONE        = 4,
     UP          = 3,

@@ -16,7 +16,7 @@
     "yarn": "^1.19.1"
   },
   "scripts": {
-    "build": "webpack --config webpack.config.js",
+    "build": "webpack --config webpack.config.dev.js",
     "deploy": "gh-pages -b master -d build",
     "start": "webpack-dev-server --mode development"
   },
