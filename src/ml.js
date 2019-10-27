@@ -14,8 +14,8 @@ let done;
 let env;
 // ob_next, reward, done, info = env.step(action)
 
-var logEnv = function() {
-    alert('hi');
+var logEnv = function(state) {
+    debugger;
 }
 
 

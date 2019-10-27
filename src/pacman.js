@@ -858,7 +858,7 @@ let PACMAN = (function () {
         }
 
         // todo call the ML
-        logEnv();
+        logEnv(Pacman.STATE);
         // ghost
         debugger;
         Pacman.STATE.set('ghost_position', ghostPos);
@@ -869,8 +869,7 @@ let PACMAN = (function () {
 
     function mainLoop() {
 
-        let diff;
-        let i;
+        let diff, i, len;
 
         if (state !== PAUSE) { 
             ++tick;
