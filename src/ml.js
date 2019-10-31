@@ -15,12 +15,17 @@ let env;
 // ob_next, reward, done, info = env.step(action)
 
 var logEnv = function(state) {
-    debugger;    
-    log = [];
-    let i;
-    Object.values.array.forEach(element => {
-        log.push(...element);
-    });
+    let log = [];
+    let iterator = state.values();
+    let substate;
+    while (true) {
+        substate = iterator.next();
+        if (substate['done'] == true) {
+            break;
+        }
+         debugger;    
+        log.push(...substate.value);
+    }
 }
 
 export { logEnv }
