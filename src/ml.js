@@ -10,12 +10,10 @@
 // die
 let ob_next;
 let reward;
-let done;
-let env;
+let log = [];
 // ob_next, reward, done, info = env.step(action)
 
 var logEnv = function(state) {
-    let log = [];
     let iterator = state.values();
     let substate;
     while (true) {
