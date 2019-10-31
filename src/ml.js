@@ -15,8 +15,12 @@ let env;
 // ob_next, reward, done, info = env.step(action)
 
 var logEnv = function(state) {
-    debugger;
+    debugger;    
+    log = [];
+    let i;
+    Object.values.array.forEach(element => {
+        log.push(...element);
+    });
 }
-
 
 export { logEnv }
