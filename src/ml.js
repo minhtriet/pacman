@@ -13,7 +13,7 @@ let reward;
 let log = [];
 // ob_next, reward, done, info = env.step(action)
 
-var logEnv = function(state) {
+var logEnv = function(state, move_reward) {
     let iterator = state.values();
     let substate;
     while (true) {
@@ -21,9 +21,10 @@ var logEnv = function(state) {
         if (substate['done'] == true) {
             break;
         }
-         debugger;    
-        log.push(...substate.value);
+        ob_next.push(...substate.value);
     }
+    move_reward = reward;
+
 }
 
 export { logEnv }

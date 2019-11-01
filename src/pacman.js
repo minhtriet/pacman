@@ -860,7 +860,7 @@ let PACMAN = (function () {
         Pacman.STATE.set('ghost_edible', ghosts.map(g => g.isVunerable()));
         Pacman.STATE.set('user_position', u['new']);
         Pacman.STATE.set('map', map.getMap());
-        logEnv(Pacman.STATE);
+        logEnv(Pacman.STATE, nScore);
     }
 
     function mainLoop() {
