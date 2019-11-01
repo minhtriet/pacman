@@ -20,5 +20,9 @@
     "deploy": "gh-pages -b master -d build",
     "start": "webpack-dev-server --mode development"
   },
-  "description": "pacman-rl"
+  "description": "pacman-rl",
+  "devDependencies": {
+    "eslint": "^6.6.0",
+    "eslint-config-google": "^0.14.0"
+  }
 }
