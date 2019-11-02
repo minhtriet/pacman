@@ -6,23 +6,24 @@
 // eat ghost
 // eat fruit
 // die
-const obNext = [];
+let obNext;
 let reward;
 // ob_next, reward, done, info = env.step(action)
 
+const rl = function(ob, rw) {
+  debugger;
+}
+
 const logEnv = function(state, moveReward) {
   if (state) {
-    const iterator = state.values();
-    let substate;
-    while (true) {
-      substate = iterator.next();
-      if (substate['done'] == true) {
-        break;
-      }
-      obNext.push(...substate.value);
-    }
+    let ghostsAndPlayer = state.get('ghost_position').concat(state.get('ghost_edible'));
+    ghostsAndPlayer = ghostsAndPlayer.concat(state.get('user_position')['x']);
+    ghostsAndPlayer = ghostsAndPlayer.concat(state.get('user_position')['y']);
+    ghostsAndPlayer = ghostsAndPlayer.flat(Infinity);
+    obNext = state.get('map').unshift(ghostsAndPlayer);
   }
   reward = moveReward;
+  rl(obNext, reward);
 };
 
 export {logEnv};
