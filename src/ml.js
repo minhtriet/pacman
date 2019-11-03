@@ -5,16 +5,13 @@ let reward;
 
 const logEnv = function(state, moveReward) {
   if (state) {
-    let ghostsAndPlayer = state.get('ghost_position').concat(state.get('ghost_edible'));
-    ghostsAndPlayer = ghostsAndPlayer.concat(state.get('user_position')['x']);
-    ghostsAndPlayer = ghostsAndPlayer.concat(state.get('user_position')['y']);
-    ghostsAndPlayer = ghostsAndPlayer.flat(Infinity);
-//    obNext = tf.tensor(state.get('map').unshift(ghostsAndPlayer));
-    debugger;
-    obNext = tf.tensor(state.get('map'));
-    debugger;
+    // ghosts = [x][y][edible]
+    let ghosts = tf.tensor(state.get('ghost_position').concat([state.get('ghost_edible')]).flat());
+    let user = tf.tensor([state.get('user_position')['x'], state.get('user_position')['y']);
+    let map = tf.tensor(state.get('map'));
   }
   reward = moveReward;
+  
 };
 
 export {logEnv};
