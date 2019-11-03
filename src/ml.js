@@ -1,18 +1,7 @@
-// import * as tf from '@tensorflow/tfjs';
+import * as tf from '@tensorflow/tfjs';
 
-
-// hit a coin, reward + 1
-// remove score
-// eat ghost
-// eat fruit
-// die
 let obNext;
 let reward;
-// ob_next, reward, done, info = env.step(action)
-
-const rl = function(ob, rw) {
-  debugger;
-}
 
 const logEnv = function(state, moveReward) {
   if (state) {
@@ -20,10 +9,12 @@ const logEnv = function(state, moveReward) {
     ghostsAndPlayer = ghostsAndPlayer.concat(state.get('user_position')['x']);
     ghostsAndPlayer = ghostsAndPlayer.concat(state.get('user_position')['y']);
     ghostsAndPlayer = ghostsAndPlayer.flat(Infinity);
-    obNext = state.get('map').unshift(ghostsAndPlayer);
+//    obNext = tf.tensor(state.get('map').unshift(ghostsAndPlayer));
+    debugger;
+    obNext = tf.tensor(state.get('map'));
+    debugger;
   }
   reward = moveReward;
-  rl(obNext, reward);
 };
 
 export {logEnv};
