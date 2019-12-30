@@ -21,16 +21,12 @@ const createPolicyNetwork = function(hiddenLayerSizes) {
   // converted to a probability of selecting the leftward-force action.
   policyNet.add(tf.layers.dense({units: 1}));
 };
-
+// 10 10
+// 170 200
 
 const logEnv = function(state, moveReward) {
   if (state) {
-    let arr = Array(200).fill(0);
-    arr = arr.map(function(){return Array(200).fill(0)});
-    // ghosts = [x][y][edible]
-    let ghosts = tf.tensor(state.get('ghost_position').concat([state.get('ghost_edible')]).flat());
-    let user = tf.tensor([state.get('user_position')['x'], state.get('user_position')['y']]);
-    let map = tf.tensor(state.get('map'));
+    debugger
   }
   reward = moveReward;
 

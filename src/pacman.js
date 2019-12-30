@@ -1,4 +1,5 @@
 import {logEnv} from './ml.js';
+import * as util from './util.js';
 
 const NONE = 4;
 const UP = 3;
@@ -14,8 +15,6 @@ const DYING = 10;
 const Pacman = {};
 
 Pacman.FPS = 30;
-
-Pacman.STATE = new Map();
 
 Pacman.Ghost = function(game, map, colour) {
   let position = null;
@@ -417,16 +416,16 @@ Pacman.User = function(game, map) {
     block = map.block(nextWhole);
 
     if ((isMidSquare(position.y) || isMidSquare(position.x)) &&
-            block === Pacman.BISCUIT || block === Pacman.PILL) {
-      map.setBlock(nextWhole, Pacman.EMPTY);
-      addScore((block === Pacman.BISCUIT) ? 10 : 50);
+            block === util.BISCUIT || block === util.PILL) {
+      map.setBlock(nextWhole, util.EMPTY);
+      addScore((block === util.BISCUIT) ? 10 : 50);
       eaten += 1;
 
       if (eaten === 182) {
         game.completedLevel();
       }
 
-      if (block === Pacman.PILL) {
+      if (block === util.PILL) {
         game.eatenPill();
       }
     }
@@ -524,7 +523,7 @@ Pacman.Map = function(size) {
   }
 
   function isWall(pos) {
-    return withinBounds(pos.y, pos.x) && map[pos.y][pos.x] === Pacman.WALL;
+    return withinBounds(pos.y, pos.x) && map[pos.y][pos.x] === util.WALL;
   }
 
   function isFloorSpace(pos) {
@@ -532,9 +531,7 @@ Pacman.Map = function(size) {
       return false;
     }
     const peice = map[pos.y][pos.x];
-    return peice === Pacman.EMPTY ||
-            peice === Pacman.BISCUIT ||
-            peice === Pacman.PILL;
+    return peice === util.EMPTY || peice === util.BISCUIT || peice === util.PILL;
   }
 
   function drawWall(ctx) {
@@ -588,9 +585,8 @@ Pacman.Map = function(size) {
 
     for (i = 0; i < height; i += 1) {
       for (j = 0; j < width; j += 1) {
-        if (map[i][j] === Pacman.PILL) {
+        if (map[i][j] === util.PILL) {
           ctx.beginPath();
-
           ctx.fillStyle = '#000';
           ctx.fillRect((j * blockSize), (i * blockSize),
               blockSize, blockSize);
@@ -626,19 +622,19 @@ Pacman.Map = function(size) {
   function drawBlock(y, x, ctx) {
     const layout = map[y][x];
 
-    if (layout === Pacman.PILL) {
+    if (layout === util.PILL) {
       return;
     }
 
     ctx.beginPath();
 
-    if (layout === Pacman.EMPTY || layout === Pacman.BLOCK ||
-            layout === Pacman.BISCUIT) {
+    if (layout === util.EMPTY || layout === util.BLOCK ||
+            layout === util.BISCUIT) {
       ctx.fillStyle = '#000';
       ctx.fillRect((x * blockSize), (y * blockSize),
           blockSize, blockSize);
 
-      if (layout === Pacman.BISCUIT) {
+      if (layout === util.BISCUIT) {
         ctx.fillStyle = '#FFF';
         ctx.fillRect((x * blockSize) + (blockSize / 2.5),
             (y * blockSize) + (blockSize / 2.5),
@@ -835,12 +831,17 @@ const PACMAN = (function() {
         }
       }
     }
-    Pacman.STATE.set('ghost_position', ghostPos.map((x) =>
-      [x['new']['x'], x['new']['y']]));
-    Pacman.STATE.set('ghost_edible', ghosts.map((g) => g.isVunerable()));
-    Pacman.STATE.set('user_position', u['new']);
-    Pacman.STATE.set('map', map.getMap());
-    logEnv(Pacman.STATE, -1); // penalty for every step in the game
+    
+    var playground = Array.from(Pacman.FULL_MAP);
+    for (i = 0; i < ghostPos.length; i++) {
+      if (ghosts[i].isVunerable()) {
+        playground[ghostPos[i]['new']['x']][ghostPos[i]['new']['y']] = util.VULNERABLE_GHOST;
+      } else {
+        playground[ghostPos[i]['new']['x']][ghostPos[i]['new']['y']] = util.INVULNERABLE_GHOST;
+      }
+    }
+    playground[u['new']['x']][u['new']['y']] = util.PLAYER
+    logEnv(playground, -1); // penalty for every step in the game
   }
 
   function mainLoop() {
@@ -993,12 +994,6 @@ const KEY = {'BACKSPACE': 8, 'TAB': 9, 'NUM_PAD_CLEAR': 12, 'ENTER': 13,
   }
 })();
 
-Pacman.WALL = 0;
-Pacman.BISCUIT = 1;
-Pacman.EMPTY = 2;
-Pacman.BLOCK = 3;
-Pacman.PILL = 4;
-
 Pacman.MAP = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
@@ -1023,6 +1018,9 @@ Pacman.MAP = [
   [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 ];
+
+const full_row = Pacman.MAP.map(x => [...util.intersperse(x, Array(8).fill(0))])
+Pacman.FULL_MAP = [...util.intersperse(full_row, Array(8).fill(Array(full_row[0].length).fill(0)))]
 
 Pacman.WALLS = [
 
