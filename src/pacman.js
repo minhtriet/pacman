@@ -564,7 +564,7 @@ Pacman.Map = function(size) {
   }
 
   function reset() {
-    map = Pacman.MAP.clone();
+    map = Array.from(MAP);
     height = map.length;
     width = map[0].length;
   }
@@ -832,7 +832,7 @@ const PACMAN = (function() {
       }
     }
     
-    var playground = Array.from(Pacman.FULL_MAP);
+    var playground = Array.from(FULL_MAP);
     for (i = 0; i < ghostPos.length; i++) {
       if (ghosts[i].isVunerable()) {
         playground[ghostPos[i]['new']['x']][ghostPos[i]['new']['y']] = util.VULNERABLE_GHOST;
@@ -994,7 +994,7 @@ const KEY = {'BACKSPACE': 8, 'TAB': 9, 'NUM_PAD_CLEAR': 12, 'ENTER': 13,
   }
 })();
 
-Pacman.MAP = [
+let MAP = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
   [0, 4, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 4, 0],
