@@ -541,8 +541,8 @@ Pacman.Map = function(size) {
     ctx.lineWidth = 5;
     ctx.lineCap = 'round';
 
-    for (i = 0; i < Pacman.WALLS.length; i += 1) {
-      line = Pacman.WALLS[i];
+    for (i = 0; i < WALLS.length; i += 1) {
+      line = WALLS[i];
       ctx.beginPath();
 
       for (j = 0; j < line.length; j += 1) {

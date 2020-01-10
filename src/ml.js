@@ -3,7 +3,6 @@ import * as tf from '@tensorflow/tfjs';
 let obNext;
 let reward;
 
-
 const createPolicyNetwork = function(hiddenLayerSizes) {
   if (!Array.isArray(hiddenLayerSizes)) {
     hiddenLayerSizes = [hiddenLayerSizes];
@@ -25,9 +24,6 @@ const createPolicyNetwork = function(hiddenLayerSizes) {
 // 170 200
 
 const logEnv = function(state, moveReward) {
-  if (state) {
-    debugger
-  }
   reward = moveReward;
 
 };
