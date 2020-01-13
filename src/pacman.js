@@ -409,11 +409,12 @@ Pacman.User = function(game, map) {
     nextWhole = next(position, direction);
 
     block = map.block(nextWhole);
-
+    let score = -1;
     if ((isMidSquare(position.y) || isMidSquare(position.x)) &&
             block === util.BISCUIT || block === util.PILL) {
       map.setBlock(nextWhole, util.EMPTY);
-      addScore((block === util.BISCUIT) ? 10 : 50);
+      score = (block === util.BISCUIT) ? 10 : 50 
+      addScore(score);
       eaten += 1;
 
       if (eaten === 182) {
@@ -428,6 +429,7 @@ Pacman.User = function(game, map) {
     return {
       'new': position,
       'old': oldPosition,
+      'score': score
     };
   }
 
@@ -808,35 +810,29 @@ const PACMAN = (function() {
     user.draw(ctx);
 
     userPos = u['new'];
-
+    let flag = true;
     for (i = 0, len = ghosts.length; i < len; i += 1) {
       if (collided(userPos, ghostPos[i]['new'])) {
         if (ghosts[i].isVunerable()) {
           ghosts[i].eat();
           eatenCount += 1;
           nScore = eatenCount * 50;
+          logEnv(nScore, map.getMap(), ghosts, ghostPos, u);
           drawScore(nScore, ghostPos[i]);
           user.addScore(nScore);
           setState(EATEN_PAUSE);
           timerStart = tick;
         } else if (ghosts[i].isDangerous()) {
-          logEnv(null, -1000);
+          logEnv(-1000, map.getMap(), ghosts, ghostPos, u);
           setState(DYING);
           timerStart = tick;
+          flag = false;
         }
       }
     }
-    
-    var playground = Array.from(FULL_MAP);
-    for (i = 0; i < ghostPos.length; i++) {
-      if (ghosts[i].isVunerable()) {
-        playground[ghostPos[i]['new']['x']][ghostPos[i]['new']['y']] = util.VULNERABLE_GHOST;
-      } else {
-        playground[ghostPos[i]['new']['x']][ghostPos[i]['new']['y']] = util.INVULNERABLE_GHOST;
-      }
+    if (!flag) {
+      logEnv(u.score, map.getMap(), ghosts, ghostPos, u); // penalty for every step in the game
     }
-    playground[u['new']['x']][u['new']['y']] = util.PLAYER
-    logEnv(playground, -1); // penalty for every step in the game
   }
 
   function mainLoop() {
@@ -897,7 +893,7 @@ const PACMAN = (function() {
   }
 
   function completedLevel() {
-    logEnv(null, 1000);
+    logEnv(1000, map.getMap(), ghost, ghostPos, user);
     setState(WAITING);
     level += 1;
     map.reset();
