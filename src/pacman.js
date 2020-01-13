@@ -1010,13 +1010,6 @@ let MAP = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 ];
 
-const pad_size = 8;
-const row_length = MAP[0].length + (MAP[0].length - 1)*pad_size;
-// const full_row = MAP.map(x => [...util.intersperse(x, Array(pad_size).fill(0))]);
-// const TWO_D_PAD = Array(pad_size).fill(Array(row_length).fill(0));
-const TWO_D_PAD = Array(8).fill(Array(163).fill(0));
-const FULL_MAP = [...util.intersperse(MAP.map(x => [...util.intersperse(x, Array(pad_size).fill(0))]), TWO_D_PAD)];
-debugger;
 const WALLS = [
 
   [{'move': [0, 9.5]}, {'line': [3, 9.5]},
