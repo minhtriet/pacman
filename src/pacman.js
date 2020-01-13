@@ -214,8 +214,8 @@ Pacman.Ghost = function(game, map, colour) {
 
       if (onGrid &&
                 map.isFloorSpace({
-                  'y': pointToCoord(nextSquare(npos.y, due)),
-                  'x': pointToCoord(nextSquare(npos.x, due))})) {
+                  'y': util.pointToCoord(nextSquare(npos.y, due)),
+                  'x': util.pointToCoord(nextSquare(npos.x, due))})) {
         direction = due;
       } else {
         npos = null;
@@ -228,8 +228,8 @@ Pacman.Ghost = function(game, map, colour) {
 
     if (onGrid &&
             map.isWallSpace({
-              'y': pointToCoord(nextSquare(npos.y, direction)),
-              'x': pointToCoord(nextSquare(npos.x, direction)),
+              'y': util.pointToCoord(nextSquare(npos.y, direction)),
+              'x': util.pointToCoord(nextSquare(npos.x, direction)),
             })) {
       due = getRandomDirection();
       return move(ctx);
@@ -276,8 +276,6 @@ Pacman.User = function(game, map) {
   keyMap[KEY.ARROW_DOWN] = DOWN;
 
   function addScore(nScore) {
-    // todo return reward
-    logEnv(null, nScore);
     score += nScore;
     if (score >= 10000 && score - nScore < 10000) {
       lives += 1;
@@ -339,9 +337,6 @@ Pacman.User = function(game, map) {
     return x % 10 === 0;
   }
 
-  function pointToCoord(x) {
-    return Math.round(x/10);
-  }
 
   function nextSquare(x, dir) {
     const rem = x % 10;
@@ -356,8 +351,8 @@ Pacman.User = function(game, map) {
 
   function next(pos, dir) {
     return {
-      'y': pointToCoord(nextSquare(pos.y, dir)),
-      'x': pointToCoord(nextSquare(pos.x, dir)),
+      'y': util.pointToCoord(nextSquare(pos.y, dir)),
+      'x': util.pointToCoord(nextSquare(pos.x, dir)),
     };
   }
 
